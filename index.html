@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobBoard DApp</title>
+
+  <!-- IPFS HTTP-client library (only one import needed) -->
+  <script type="module" src="app.module.js"></script>
+  <!-- Your application code; defer ensures it runs after the above libraries -->
+  <script src="app.js" defer></script>
+</head>
+  <style>
+    body 
+    {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    #app {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .account-info {
+      background-color: #f0f8ff;
+      padding: 10px 15px;
+      border-radius: 50px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    .account-info::before {
+      content: "⚡";
+      margin-right: 5px;
+    }
+
+    h1 {
+      color: #333;
+      margin-top: 0;
+    }
+
+    h3 {
+      margin-top: 20px;
+      color: #444;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding: 15px;
+      background-color: #fafafa;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+
+    .job-card {
+      background-color: #fafafa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      transition: transform 0.2s;
+    }
+
+    .job-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .job-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .job-actions button {
+      flex: 1;
+      min-width: 120px;
+      margin: 5px 0;
+    }
+
+    #messageContainer {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .sent-message, .received-message {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 5px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .sent-message {
+      background-color: #e3f1fc;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .received-message {
+      background-color: #f0f0f0;
+      align-self: flex-start;
+    }
+
+    #applicantsSection {
+      display: none;
+    }
+
+    .message-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .message-input-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .message-input-group input {
+      flex-grow: 1;
+    }
+
+    .status-indicator {
+      padding: 5px 10px;
+      border-radius: 4px;
+      margin-top: 5px;
+      font-size: 12px;
+    }
+
+    .status-success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .ipfs-status {
+      font-size: 12px;
+      margin-top: 5px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .ipfs-connected {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .ipfs-disconnected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      #app {
+        padding: 15px;
+      }
+      
+      .job-actions {
+        flex-direction: column;
+      }
+
+      .message-input-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="header">
+      <h1>Job Board DApp</h1>
+      <div class="account-info">
+        <span id="currentAccount">Not connected</span>
+      </div>
+    </div>
+    
+    <!-- Job Posting Section -->
+    <div id="postJobSection" class="section">
+      <h3>Post a Job</h3>
+      <input type="text" id="jobTitle" placeholder="Job Title" required>
+      <input type="number" id="jobBudget" placeholder="Budget (ETH)" step="0.01" required>
+      <button onclick="postJob()">Post Job</button>
+    </div>
+
+    <!-- Available Jobs Section -->
+    <div id="jobs" class="section">
+      <h3>Available Jobs</h3>
+      <!-- Dynamically loaded job listings will appear here -->
+    </div>
+
+    <!-- Applicants Section -->
+    <div id="applicantsSection" class="section" style="display: none;">
+      <h3>Job Applicants</h3>
+      <div id="applicantsList">
+        <!-- Dynamically loaded applicants will appear here -->
+      </div>
+    </div>
+
+    <!-- Messaging Section -->
+    <div id="messagesSection" class="section">
+      <h3>Messaging <span id="ipfsStatus" class="ipfs-status ipfs-disconnected">IPFS: Connecting...</span></h3>
+      <div class="message-controls">
+        <select id="jobSelector" onchange="updateUI()">
+          <option value="">Select a job</option>
+          <!-- Jobs will be loaded here -->
+        </select>
+        <select id="messageRecipient">
+          <option value="">Select recipient</option>
+          <!-- Recipients will be loaded here -->
+        </select>
+        <div class="message-input-group">
+          <input type="hidden" id="messageJobId" value="">
+          <input type="text" id="messageInput" placeholder="Type a message">
+          <button id="sendButton" onclick="sendMessage()">Send Message</button>
+        </div>
+        <div id="messageStorageStatus" class="status-indicator"></div>
+      </div>
+      <div id="messageContainer">
+        <h4>Messages</h4>
+        <p>Select a job and recipient to view messages.</p>
+      </div>
+    </div>
+
+    <!-- Job Actions Section -->
+    <div id="actionsSection" class="section">
+      <h3>Job Actions</h3>
+      <!-- Dynamically loaded actions will appear here -->
+    </div>
+  </div>
+
+  <!-- Include Web3.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+  
+  <!-- Link to your custom app.js that handles all logic -->
+  <script src="app.js"></script>
+
+  <script>
+    // Initialize IPFS status indicator
+    window.addEventListener('load', function() {
+      // Check IPFS connection status every 5 seconds
+      setInterval(function() {
+        const statusElement = document.getElementById('ipfsStatus');
+        if (ipfs) {
+          try {
+            // Test IPFS connection by trying to get its ID
+            ipfs.id()
+              .then(() => {
+                statusElement.className = "ipfs-status ipfs-connected";
+                statusElement.textContent = "IPFS: Connected";
+              })
+              .catch(() => {
+                statusElement.className = "ipfs-status ipfs-disconnected";
+                statusElement.textContent = "IPFS: Disconnected";
+              });
+          } catch (e) {
+            statusElement.className = "ipfs-status ipfs-disconnected";
+            statusElement.textContent = "IPFS: Disconnected";
+          }
+        } else {
+          statusElement.className = "ipfs-status ipfs-disconnected";
+          statusElement.textContent = "IPFS: Not Initialized";
+        }
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
