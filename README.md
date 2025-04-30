@@ -4,7 +4,17 @@ A decentralized application (DApp) that allows users to post jobs, apply for job
 It is built using Solidity smart contracts, Web3.js, Truffle framework, and uses IPFS for decentralized off-chain message storage.
 
 ---
+## *Team Information*
+*Team Name:* HASHLINK  
+*Team Members:*
+- Kotha Ashrith Reddy  - 230001043
+- Shrish Shriyans   -   230003072
+- Buditi Deepak   -   230001016
+- Avvaru Venkata Sai Deepak   -   230001011
+- Vivek Tej Kanakam   -   230041014
+- Bommireddy Varun Kumar Reddy   -   230041006
 
+---
 ## Features
 
 - **Post Jobs**: Employers can create new job listings with a title and budget.
