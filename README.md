@@ -46,7 +46,7 @@ It is built using Solidity smart contracts, Web3.js, Truffle framework, and uses
    npm install -g truffle
    npm install ipfs-http-client
    ```
-2. **Open Ganache and start a local blockchain (if not connected to a blockcahin)**
+2. **Open Ganache and start a local blockchain (if not connected to a blockchain)**
 
 3. **Compile and Migrate Smart Contracts**
 
