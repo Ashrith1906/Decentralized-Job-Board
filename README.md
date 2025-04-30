@@ -46,15 +46,16 @@ It is built using Solidity smart contracts, Web3.js, Truffle framework, and uses
    npm install -g truffle
    npm install ipfs-http-client
    ```
+2. **Open Ganache and start a local blockchain (if not connected to a blockcahin)**
 
-2. **Compile and Migrate Smart Contracts**
+3. **Compile and Migrate Smart Contracts**
 
    ```bash
    truffle compile
    truffle migrate
    ```
 
-3. **Start a Local IPFS Node (Optional)**
+4. **Start a Local IPFS Node (Optional)**
 
    ```bash
    npm install -g ipfs
@@ -62,18 +63,18 @@ It is built using Solidity smart contracts, Web3.js, Truffle framework, and uses
    jsipfs daemon
    ```
 
-4. **Run a Local HTTP Server**  
+5. **Run a Local HTTP Server**  
    Navigate to your frontend folder and run:
 
    ```bash
    python -m http.server 8000
    ```
 
-5. **Access the DApp**  
+6. **Access the DApp**  
    Open your browser and visit:  
    [http://localhost:8000](http://localhost:8000)
 
-6. **MetaMask Setup**
+7. **MetaMask Setup**
 
    - Install the MetaMask extension.
    - Connect to the appropriate Ethereum network.
