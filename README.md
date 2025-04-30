@@ -32,9 +32,11 @@ It is built using Solidity smart contracts, Web3.js, Truffle framework, and uses
 - **Solidity**: Smart contract development for job posting and messaging.
 - **Web3.js**: Communication between the frontend and Ethereum blockchain.
 - **Truffle**: Smart contract development framework.
+- **Ganache**: A private Ethereum network for local development.
 - **IPFS** (via `js-ipfs` or Infura): Off-chain message storage.
 - **MetaMask**: Wallet integration for user account management.
 - **HTML, CSS, JavaScript**: Frontend interface.
+- **OpenZeppelin**: Library for securing smart contracts (Reentrancy Guard).
 
 ---
 
