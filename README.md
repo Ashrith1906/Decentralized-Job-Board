@@ -1,4 +1,4 @@
-# JobBoard DApp
+# BlockJobs – A Blockchain-Powered Platform for Job Posting and Freelancing
 
 A decentralized application (DApp) that allows users to post jobs, apply for jobs, select freelancers, send messages related to jobs, and release payments upon completion.  
 It is built using Solidity smart contracts, Web3.js, Truffle framework, and uses IPFS for decentralized off-chain message storage.
